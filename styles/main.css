@@ -1,0 +1,48 @@
+*{
+    margin: 0;
+}
+
+a{
+    display: block;
+}
+
+.navigationBar {
+    background-color: #4056a1;
+    height: 3em;
+    text-align: left;
+    padding: 0.5em;
+    overflow: hidden;
+}
+
+.navigationBar .titleText{
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 7px 16px;
+    text-decoration: none;
+    font-size: 30px;
+    font-family: "roboto";
+    cursor: default;
+}
+
+.navigationBar a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    font-family: "roboto";
+    cursor: default;
+    border-radius: 10px;
+}
+
+.navigationBar a:hover {
+    background-color: #c5cbe3;
+    color: black;
+}
+
+.navigationBar a.active {
+    background-color: red;
+    color: black;
+}
