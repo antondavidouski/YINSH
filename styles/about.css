@@ -13,7 +13,8 @@ a{
     height: 3em;
     text-align: left;
     padding: 0.5em;
-    overflow: hidden;
+    position: sticky;
+    top: 0;
 }
 
 .navigationBar .titleText{
@@ -41,10 +42,5 @@ a{
 
 .navigationBar a:hover {
     background-color: #c5cbe3;
-    color: black;
-}
-
-.navigationBar a.active {
-    background-color: red;
     color: black;
 }

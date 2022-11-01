@@ -13,7 +13,8 @@ a{
     height: 3em;
     text-align: left;
     padding: 0.5em;
-    overflow: hidden;
+    position: sticky;
+    top: 0;
 }
 
 .navigationBar .titleText{
@@ -23,7 +24,7 @@ a{
     padding: 7px 16px;
     text-decoration: none;
     font-size: 30px;
-    font-family: "roboto";
+    font-family: "Arial";
     cursor: default;
 }
 
@@ -34,7 +35,7 @@ a{
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
-    font-family: "roboto";
+    font-family: "Arial";
     cursor: default;
     border-radius: 10px;
 }
@@ -44,7 +45,3 @@ a{
     color: black;
 }
 
-.navigationBar a.active {
-    background-color: red;
-    color: black;
-}

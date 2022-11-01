@@ -2,6 +2,7 @@
 
 *{
     margin: 0;
+    font-family: "Arial";
 }
 
 a{
@@ -13,7 +14,9 @@ a{
     height: 3em;
     text-align: left;
     padding: 0.5em;
-    overflow: hidden;
+    position: sticky;
+    top: 0;
+    
 }
 
 .navigationBar .titleText{
@@ -44,7 +47,33 @@ a{
     color: black;
 }
 
-.navigationBar a.active {
-    background-color: red;
-    color: black;
+.title {
+    padding: 2em
+}
+
+.title h1 {
+    font-size: 2em;
+    font-family: "Arial";
+    text-align: center;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center2 {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 12%;
+}
+
+.ruleDescription {
+    padding-left: 2em;
+}
+
+h2 {
+    padding-left: 0.7em;
 }
