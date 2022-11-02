@@ -24,4 +24,14 @@ canvas{
     border: 2px solid red;
     margin: 1em;
     cursor: crosshair;
+    overflow: hidden;
+}
+
+.ring{
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background-color: black;
+    position: absolute;
+    z-index: 1;
 }
