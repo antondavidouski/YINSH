@@ -11,7 +11,9 @@ function makeBoard(){
 }
 
 function placeRing(){
-    //Places a ring on the board by takin the x and y coordinates of the click event
+    //Places a ring on the board by taking the x and y coordinates of the click event
+
+    //To do: Implemet ring snapping onto nearest node
     var board = document.getElementById("board");
     var offsetX = board.offsetLeft;
     var offsetY = board.offsetTop;
@@ -20,6 +22,8 @@ function placeRing(){
     console.log(x + " " + y);
     var ring = document.createElement("div");
     ring.id = "permanent"
+    ring.addEventListener('mousemove', hoverRing);
+    //Need this to stop animation breaking when mouse moves over already placed ring
     ring.className = "ring";
     ring.style.position = "absolute";
     ring.style.left = (x + offsetX)+ "px";
