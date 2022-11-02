@@ -8,5 +8,20 @@ a{
     display: block;
 }
 
+canvas{
+    width: 80vmin;
+    height: 100%;
+    border: 2px solid blue;
+}
 
+.mainContainer{
+    height: 90vh;
+    overflow: hidden;
+}
 
+.board{
+    height: 85vmin;
+    border: 2px solid red;
+    margin: 1em;
+    cursor: crosshair;
+}

@@ -8,3 +8,13 @@ a{
     display: block;
 }
 
+.aboutText{
+    padding: 2em;
+    font-family: "Arial";
+    
+}
+
+a{
+    text-decoration: none;
+    color: blue;
+}
