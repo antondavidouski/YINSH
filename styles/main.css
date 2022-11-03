@@ -19,17 +19,17 @@ canvas{
 
 .board{
     height: 85vmin;
-    border: 2px solid red;
+    /* border: 2px solid black; */
     margin: 1em;
     cursor: crosshair;
     overflow: hidden;
 }
 
 .ring{
-    width: 1em;
-    height: 1em;
+    width: 2em;
+    height: 2em;
     border-radius: 50%;
-    background-color: black;
+    border: 2px solid black;
     position: absolute;
     z-index: 1;
     cursor: crosshair;

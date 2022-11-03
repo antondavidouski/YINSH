@@ -1,5 +1,5 @@
 .navigationBar {
-    background-color: #52ab98;
+    background-color: #3a6ba5;
     height: 3em;
     text-align: left;
     padding: 0.5em;
@@ -33,5 +33,5 @@
 }
 
 .navigationBar a:hover {
-    background-color: #80b7ab;
+    background-color: #5282bd;
 }

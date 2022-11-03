@@ -7,6 +7,7 @@ function makeBoard(){
     board.className = "board";
     board.addEventListener("click", placeRing);
     board.addEventListener("mousemove", hoverRing);
+    board.addEventListener("mouseleave", removetempRing);
     mainContainer.appendChild(board);
 }
 
@@ -33,10 +34,7 @@ function placeRing(){
 
 function hoverRing(){
     //Places a temporary ring on the board by taking the current x and y coordinates of the mouse while it is moving inside the board div
-    var oldRing = document.getElementById("temporary");
-    if(oldRing != null){
-        oldRing.remove();
-    }
+    removetempRing();
     var board = document.getElementById("board");
     var offsetX = board.offsetLeft;
     var offsetY = board.offsetTop;
@@ -51,6 +49,14 @@ function hoverRing(){
     ring.style.left = (x + offsetX)+ "px";
     ring.style.top = (y + offsetY) + "px";
     mainContainer.appendChild(ring);
+}
+
+function removetempRing(){
+    //Removes the temporary ring when the mouse leaves the board div and also runs at the start of the hoverRing function
+    var oldRing = document.getElementById("temporary");
+    if(oldRing != null){
+        oldRing.remove();
+    }
 }
 
 window.onload = makeBoard;
