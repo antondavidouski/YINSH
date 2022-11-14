@@ -27,8 +27,11 @@ function placeRing(){
     //Need this to stop animation breaking when mouse moves over already placed ring
     ring.className = "ring";
     ring.style.position = "absolute";
-    ring.style.left = (x + offsetX)+ "px";
-    ring.style.top = (y + offsetY) + "px";
+    var closestX = closestVertical(x);
+    var closestY = closestHorizontal(y);
+    console.log(closestX + " " + closestY);
+    ring.style.left = (closestX + offsetX - 34)+ "px";
+    ring.style.top = (closestY + offsetY - 34) + "px";
     mainContainer.appendChild(ring);
 }
 
@@ -46,8 +49,10 @@ function hoverRing(){
     ring.addEventListener("click", placeRing);
     //Must bind placeRing listener to the temporary ring so you can still place a ring when hovering over the temporary one.
     ring.style.position = "absolute";
-    ring.style.left = (x + offsetX)+ "px";
-    ring.style.top = (y + offsetY) + "px";
+    var closestX = closestVertical(x);
+    var closestY = closestHorizontal(y);
+    ring.style.left = (closestX + offsetX - 34)+ "px";
+    ring.style.top = (closestY + offsetY - 34) + "px";
     mainContainer.appendChild(ring);
 }
 
@@ -57,6 +62,24 @@ function removetempRing(){
     if(oldRing != null){
         oldRing.remove();
     }
+}
+
+function closestVertical(x){
+    //Returns the closest vertical node to the x coordinate of the mouse
+    var nodes = [46, 104, 162, 220, 278, 336, 395, 453, 510, 569, 627];
+    var closest = nodes.reduce(function(prev, curr) {
+        return (Math.abs(curr - x) < Math.abs(prev - x) ? curr : prev);
+    });
+    return closest;
+}
+
+function closestHorizontal(y){
+    //Returns the closest horizontal node to the y coordinate of the mouse
+    var nodes = [36, 68, 101, 135, 168, 202, 236, 269, 303, 337, 370, 403, 437, 470, 504, 538, 572, 605, 639];
+    var closest = nodes.reduce(function(prev, curr) {
+        return (Math.abs(curr - y) < Math.abs(prev - y) ? curr : prev);
+    });
+    return closest;
 }
 
 window.onload = makeBoard;
