@@ -1,5 +1,7 @@
 #Main game logic file for Yinsh
 
+from gameGUI import Game
+import tkinter as tk
 class Board:
     
     def __init__(self):
@@ -28,7 +30,13 @@ class Board:
         self.edgeCases = [[0,0],[0,1],[0,2],[0,3],[0,5],[0,7],[0,8],[0,9],[0,10],[1,0],[1,1],[1,2],[1,8],[1,9],[1,10],[2,0],[2,1],[2,9],[2,10],[3,0],[3,10],[4,0],[4,10],[14,0],[14,1],[14,9],[14,10],[16,0],[16,1],[16,9],[16,10],[17,0],[17,1],[17,2],[17,8],[17,9],[17,10],[18,0],[18,1],[18,2],[18,3],[18,5],[18,7],[18,8],[18,9],[18,10]]
         for i in self.edgeCases:
             self.board[i[0]][i[1]] = 0
-            
+        window = tk.Tk()
+        window.geometry('600x1000')
+        self.game = Game(window)
+        self.game.drawNumbers()
+        self.game.drawBoard(self.board)
+        
+        
     def displayBoard(self):
         #Display the board
         for i in range(11):
@@ -57,6 +65,7 @@ class Board:
                 
                 print(block, end = " ")
             print('|', i)
+        self.game.drawBoard(self.generateSimpleBoard(self.board))
         
     def placeRing(self, player, y, x):
         #x and y inputs are swapped becuasse the board is stored as 2D list with each row an element, so the first index is the y coordinate
@@ -77,11 +86,22 @@ class Board:
             self.board[x][y] = Marker(self.player) #place a marker on the old ring position
         else:
             print("Invalid move")
+        self.generateSimpleBoard(self.board)
             
     def isMoveValid(self, board, x, y, nx, ny):
         #implement later
         return True
-           
+    
+    def generateSimpleBoard(self, board):
+        #will return a simplified board, with objects replaced by their associated number, useful for GUI and input into AI
+        self.simpleBoard = [[1 for i in range(11)] for i in range (19)]
+        for i in range(19):
+            for j in range(11):
+                if type(board[i][j]) == int:
+                    self.simpleBoard[i][j] = board[i][j]
+                else:
+                    self.simpleBoard[i][j] = board[i][j].what()
+        return self.simpleBoard
 class Ring:
     
     def __init__(self, player, x, y):
