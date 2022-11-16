@@ -2,7 +2,7 @@ function makeBoard(){
     //Creates a board div, places SVG inside and adds to main container, binds event listeners
     var mainContainer = document.getElementById("mainContainer");
     var board = document.createElement("img");
-    board.src = "img/boardVector.svg";
+    board.src = "website/img/boardVector.svg";
     board.id = "board";
     board.className = "board";
     board.addEventListener("click", placeRing);

@@ -9,7 +9,7 @@ A website to play the board game YINSH with an AI player. Work in progress.
         <br>
         <p>YINSH is played on a board shaped like a truncated six-pointed star with a triangular grid and 85 spaces (referring to the nodes or intersections), including those along the perimeter. The board is oriented so the lines with the letter labels run between the two players. Each space in the game is available for placement of rings and markers</p>
         <br>
-        <img src = "img/emptyBoard.png" class = "center" alt = "board">
+        <img src = "website/img/emptyBoard.png" class = "center" alt = "board">
         <br>
         <p>The game pieces are:</p>
         <ul>
@@ -67,12 +67,12 @@ A website to play the board game YINSH with an AI player. Work in progress.
         </h2>
         <div class = "ruleDescription">
         <br>
-        <img src = "img/boardBeforeMove.png" class = "center2" alt = "example move">
+        <img src = "website/img/boardBeforeMove.png" class = "center2" alt = "example move">
         <br>
         <p>On the board above, potential moves for the black ring at E4 are shown with broken rings. Note that K10 is not a possible move, as J9 is the first open space after passing over existing markers; similarly, E1 is not possible. Also, C2 and A4 are blocked by rings. </p>
         <br>
         <br>
-        <img src = "img/boardAfterMove.png" class = "center2" alt = "example move">
+        <img src = "website/img/boardAfterMove.png" class = "center2" alt = "example move">
         <br>
         <p>On the board above, black has decided on the move E4→E10 , which results in the placement of a black marker at E4 and the reversal of the colors of the five markers from E5–E9. </p>
         <br>
