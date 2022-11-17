@@ -1,10 +1,10 @@
 #Main game logic file for Yinsh
 
-from gameGUI import Game
+from gui import GameWindow
 import tkinter as tk
 class Board:
     
-    def __init__(self):
+    def __init__(self, moveSafeMode):
         #Board number identifiers:
             #0 = invalid space
             #1 = empty space
@@ -14,6 +14,7 @@ class Board:
             #--Player 2--
             #4 = white ring
             #5 = white marker
+        self.moveSafeMode = moveSafeMode #setting this to false will skip move validation, which will speed training up, as the AI will only make valid moves
         self.boarditems = {'invalid': '  ', 
                            'empty': '⬛', 
                            'redRing': '⭕', 
@@ -31,40 +32,41 @@ class Board:
         for i in self.edgeCases:
             self.board[i[0]][i[1]] = 0
         window = tk.Tk()
-        window.geometry('600x1000')
-        self.game = Game(window)
+        window.geometry('900x1000')
+        window.attributes('-topmost', True)
+        self.game = GameWindow(window)
         self.game.drawNumbers()
         self.game.drawBoard(self.board)
         
         
     def displayBoard(self):
         #Display the board
-        for i in range(11):
-            print(i, end = "  ")
+        # for i in range(11):
+        #     print(i, end = "  ")
     
-        print()
-        print("-"*33)
-        for i in range(19):
-            for j in range(11):
-                block = self.board[i][j]
-                if type(block) == int:
-                    if block == 1:
-                        block = self.boarditems['empty']
-                    elif block == 0:
-                        block = self.boarditems['invalid']
-                else:
-                    block = block.what()
-                    if block == 2:
-                        block = self.boarditems['redRing']
-                    elif block == 3:
-                        block = self.boarditems['redMarker']
-                    elif block == 4:
-                        block = self.boarditems['whiteRing']
-                    elif block == 5:
-                        block = self.boarditems['whiteMarker']
+        # print()
+        # print("-"*33)
+        # for i in range(19):
+        #     for j in range(11):
+        #         block = self.board[i][j]
+        #         if type(block) == int:
+        #             if block == 1:
+        #                 block = self.boarditems['empty']
+        #             elif block == 0:
+        #                 block = self.boarditems['invalid']
+        #         else:
+        #             block = block.what()
+        #             if block == 2:
+        #                 block = self.boarditems['redRing']
+        #             elif block == 3:
+        #                 block = self.boarditems['redMarker']
+        #             elif block == 4:
+        #                 block = self.boarditems['whiteRing']
+        #             elif block == 5:
+        #                 block = self.boarditems['whiteMarker']
                 
-                print(block, end = " ")
-            print('|', i)
+        #         print(block, end = " ")
+        #     print('|', i)
         self.game.drawBoard(self.generateSimpleBoard(self.board))
         
     def placeRing(self, player, y, x):
@@ -81,16 +83,78 @@ class Board:
      
     def moveRing(self, y, x, ny, nx):
         self.player = self.board[x][y].owner() #figure out which player the ring belongs to
-        if self.isMoveValid(self.board, x, y, nx, ny):
+        if self.isMoveValid(x, y, nx, ny) or not self.moveSafeMode: #check if the move is valid
             self.board[x][y], self.board[nx][ny] = 1, Ring(self.player, nx, ny) #move the ring
             self.board[x][y] = Marker(self.player) #place a marker on the old ring position
         else:
             print("Invalid move")
         self.generateSimpleBoard(self.board)
             
-    def isMoveValid(self, board, x, y, nx, ny):
-        #implement later
+    def isMoveValid(self, x, y, nx, ny):
+        if ny == y:
+            return False #cannot move horizontally
+        #determine which direction the move is going
+        if nx == x:
+            if ny > y:
+                direction = 'up'
+                dx, dy = 0, 1
+            else:
+                direction = 'down'
+                dx, dy = 0, -1
+        elif ny > y:
+            #piece is moving up
+            if nx > x:
+                direction = 'upright'
+                dx, dy = 1, 1
+            else:
+                direction = 'upleft'
+                dx, dy = -1, 1
+        elif ny < y:
+            #piece is moving down
+            if nx > x:
+                direction = 'downright'
+                dx, dy = 1, -1
+            else:
+                direction = 'downleft'
+                dx, dy = -1, -1
+                
+        if self.board[nx][ny] != 1:
+            return False #cannot move to a space that is not empty
+        
+        #now take "steps" in the direction of the move until the new position is reached or return False if any step violates a rule
+        currPos = [x, y]
+        markersHaveBeenFlipped = False
+        flippedMarkers = []
+        reachedNewPos = False
+        while not reachedNewPos:
+            currPos[0] += dx
+            currPos[1] += dy
+            if currPos[0] == nx and currPos[1] == ny:
+                break
+            newBlock = self.board[currPos[0]][currPos[1]].what() if type(self.board[currPos[0]][currPos[1]]) != int else self.board[currPos[0]][currPos[1]] #get the type of the block at the current position 
+            if newBlock == 0:
+                return False
+            if newBlock == 1 and markersHaveBeenFlipped:
+                #ring must stop on next available space if it has flipped markers
+                if currPos[0] == nx and currPos[1] == ny:
+                    reachedNewPos = True
+                else:
+                    return False
+            if newBlock == 2 or newBlock == 4:
+                #if the next block is a ring, the move is invalid
+                return False
+            if newBlock == 3 or newBlock == 5:
+                #if the next block is a marker, flip it
+                markersHaveBeenFlipped = True
+                flippedMarkers.append(self.board[currPos[0]][currPos[1]])
+        self.flipMarkers(flippedMarkers)
         return True
+            
+    def flipMarkers(self, markers):
+        #flip the markers
+        for marker in markers:
+            marker.flip()           
+            
     
     def generateSimpleBoard(self, board):
         #will return a simplified board, with objects replaced by their associated number, useful for GUI and input into AI
@@ -139,10 +203,7 @@ class Marker:
         else:
             return 5
     
-board = Board()
-board.placeRing(1,4,4)
-board.displayBoard()
-board.moveRing(4,4,7,7)
+board = Board(True)
 board.displayBoard()
 
 while True:
