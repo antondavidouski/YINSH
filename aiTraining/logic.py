@@ -82,7 +82,10 @@ class Board:
             print("Invalid placement")
      
     def moveRing(self, y, x, ny, nx):
-        self.player = self.board[x][y].owner() #figure out which player the ring belongs to
+        try:
+            self.player = self.board[x][y].owner() #figure out which player the ring belongs to
+        except AssertionError:
+            print("Invalid ring")
         if self.isMoveValid(x, y, nx, ny) or not self.moveSafeMode: #check if the move is valid
             self.board[x][y], self.board[nx][ny] = 1, Ring(self.player, nx, ny) #move the ring
             self.board[x][y] = Marker(self.player) #place a marker on the old ring position
@@ -90,17 +93,19 @@ class Board:
             print("Invalid move")
         self.generateSimpleBoard(self.board)
             
-    def isMoveValid(self, x, y, nx, ny):
+    def isMoveValid(self, y, x, ny, nx):
+        print(f'Checking if move from {x}, {y} to {nx}, {ny} is valid')
         if ny == y:
+            print("Invalid move: Cannot move horizontally")
             return False #cannot move horizontally
         #determine which direction the move is going
         if nx == x:
             if ny > y:
                 direction = 'up'
-                dx, dy = 0, 1
+                dx, dy = 0, 2
             else:
                 direction = 'down'
-                dx, dy = 0, -1
+                dx, dy = 0, -2
         elif ny > y:
             #piece is moving up
             if nx > x:
@@ -119,6 +124,7 @@ class Board:
                 dx, dy = -1, -1
                 
         if self.board[nx][ny] != 1:
+            print('Invalid move: space is occupied')
             return False #cannot move to a space that is not empty
         
         #now take "steps" in the direction of the move until the new position is reached or return False if any step violates a rule
@@ -126,6 +132,7 @@ class Board:
         markersHaveBeenFlipped = False
         flippedMarkers = []
         reachedNewPos = False
+        
         while not reachedNewPos:
             currPos[0] += dx
             currPos[1] += dy
@@ -133,20 +140,24 @@ class Board:
                 break
             newBlock = self.board[currPos[0]][currPos[1]].what() if type(self.board[currPos[0]][currPos[1]]) != int else self.board[currPos[0]][currPos[1]] #get the type of the block at the current position 
             if newBlock == 0:
+                print('Invalid move: cannot move through invalid spaces')
                 return False
             if newBlock == 1 and markersHaveBeenFlipped:
                 #ring must stop on next available space if it has flipped markers
                 if currPos[0] == nx and currPos[1] == ny:
                     reachedNewPos = True
                 else:
+                    print('Invalid move: ring must stop on next available space if it has flipped markers')
                     return False
             if newBlock == 2 or newBlock == 4:
                 #if the next block is a ring, the move is invalid
+                print('Invalid move: cannot move through rings')
                 return False
             if newBlock == 3 or newBlock == 5:
                 #if the next block is a marker, flip it
                 markersHaveBeenFlipped = True
                 flippedMarkers.append(self.board[currPos[0]][currPos[1]])
+        print(flippedMarkers)
         self.flipMarkers(flippedMarkers)
         return True
             
