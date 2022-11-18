@@ -32,7 +32,7 @@ class Board:
         for i in self.edgeCases:
             self.board[i[0]][i[1]] = 0
         window = tk.Tk()
-        window.geometry('900x1000')
+        window.geometry('900x1000+540+0')
         window.attributes('-topmost', True)
         self.game = GameWindow(window)
         self.game.drawNumbers()
@@ -123,7 +123,7 @@ class Board:
                 direction = 'downleft'
                 dx, dy = -1, -1
                 
-        if self.board[nx][ny] != 1:
+        if self.board[ny][nx] != 1:
             print('Invalid move: space is occupied')
             return False #cannot move to a space that is not empty
         
@@ -132,31 +132,34 @@ class Board:
         markersHaveBeenFlipped = False
         flippedMarkers = []
         reachedNewPos = False
-        
-        while not reachedNewPos:
-            currPos[0] += dx
-            currPos[1] += dy
-            if currPos[0] == nx and currPos[1] == ny:
-                break
-            newBlock = self.board[currPos[0]][currPos[1]].what() if type(self.board[currPos[0]][currPos[1]]) != int else self.board[currPos[0]][currPos[1]] #get the type of the block at the current position 
-            if newBlock == 0:
-                print('Invalid move: cannot move through invalid spaces')
-                return False
-            if newBlock == 1 and markersHaveBeenFlipped:
-                #ring must stop on next available space if it has flipped markers
+        try:
+            while not reachedNewPos:
+                currPos[0] += dx
+                currPos[1] += dy
                 if currPos[0] == nx and currPos[1] == ny:
-                    reachedNewPos = True
-                else:
-                    print('Invalid move: ring must stop on next available space if it has flipped markers')
+                    break
+                newBlock = self.board[currPos[1]][currPos[0]].what() if type(self.board[currPos[0]][currPos[1]]) != int else self.board[currPos[1]][currPos[0]] #get the type of the block at the current position 
+                if newBlock == 0:
+                    print('Invalid move: cannot move through invalid spaces')
                     return False
-            if newBlock == 2 or newBlock == 4:
-                #if the next block is a ring, the move is invalid
-                print('Invalid move: cannot move through rings')
-                return False
-            if newBlock == 3 or newBlock == 5:
-                #if the next block is a marker, flip it
-                markersHaveBeenFlipped = True
-                flippedMarkers.append(self.board[currPos[0]][currPos[1]])
+                if newBlock == 1 and markersHaveBeenFlipped:
+                    #ring must stop on next available space if it has flipped markers
+                    if currPos[0] == ny and currPos[1] == nx:
+                        reachedNewPos = True
+                    else:
+                        print('Invalid move: ring must stop on next available space if it has flipped markers')
+                        return False
+                if newBlock == 2 or newBlock == 4:
+                    #if the next block is a ring, the move is invalid
+                    print('Invalid move: cannot move through rings')
+                    return False
+                if newBlock == 3 or newBlock == 5:
+                    #if the next block is a marker, flip it
+                    markersHaveBeenFlipped = True
+                    flippedMarkers.append(self.board[currPos[0]][currPos[1]])
+        except IndexError:
+            print('Invalid move: cannot move off the board')
+            return False
         print(flippedMarkers)
         self.flipMarkers(flippedMarkers)
         return True
