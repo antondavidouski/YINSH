@@ -37,6 +37,12 @@ class Board:
         self.game = GameWindow(window)
         self.game.drawNumbers()
         self.game.drawBoard(self.board)
+        counter = 0
+        for i in range(19):
+            for j in range(11):
+                if self.board[i][j] == 1:
+                    counter += 1
+        print(counter)
         
         
     def displayBoard(self):

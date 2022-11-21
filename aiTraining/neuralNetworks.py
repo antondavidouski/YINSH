@@ -5,39 +5,23 @@ def sigmoid(x):
 
 class Agent:
     
-    def __init__(self, inputSize, hidden1, hidden2, outputSize, oldWeights1, oldWeights2, oldWeights3):
-        self.inputSize = inputSize
-        self.hidden1 = hidden1
-        self.hidden2 = hidden2
-        self.outputSize = outputSize
-        self.oldWeights1 = oldWeights1
-        self.oldWeights2 = oldWeights2
-        self.oldWeights3 = oldWeights3
-        self.weights1, self.weights2, self.weights3 = self.generateNewWeights(self.oldWeights1, self.oldWeights2, self.oldWeights3)
-        print(self.weights1)
-        print(self.weights2)
-        print(self.weights3)
+    def __init__(self, layers, biases, activation):
+        #layers is a 2D array of numpy arrays, each array is a layer of the network, likewise for biases
+        self.layers = layers
+        self.biases = biases
+        self.activation = activation
+        self.layers, self.biases = self.generateNewWeights(self.layers, self.biases)
     
-    def generateNewWeights(self, oldWeights1, oldWeights2, oldWeights3):
+    def generateNewWeights(self, layers, biases):
         #will write this later, currently doesnt do anything useful
-        self.weights1 = oldWeights1
-        self.weights2 = oldWeights2
-        self.weights3 = oldWeights3
-        return self.weights1, self.weights2, self.weights3
+        self.newLayers = layers
+        self.newBiases = biases
+        return self.newLayers, self.newBiases
         
-    def evaluate(self, inputs):
-        self.layer1 = sigmoid(np.dot(inputs, self.weights1))
-        self.layer2 = sigmoid(np.dot(self.layer1, self.weights2))
-        self.output = sigmoid(np.dot(self.layer2, self.weights3))
+    def feedForward(self, inputs):
+        #feed forward through the network
+        self.output = inputs
+        for weights, bias in zip(self.layers, self.biases):
+            self.output = self.activation(np.dot(self.output, weights) + bias)
         return self.output
 
-
-#just testing that stuff works here
-#initialise the weights
-random1 = np.ones((1,3))
-random2 = np.ones((3,3))
-random3 = np.ones((3,1))
-agent = Agent(1, 3, 3, 1, random1, random2, random3)
-print(agent.evaluate(np.array([1])))
-    
-    
