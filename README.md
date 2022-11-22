@@ -1,7 +1,7 @@
 # YINSH
 A website to play the board game YINSH with an AI player.
 
-See the current deployment of the project <a href = 'https://antondavidouski.github.io/YINSH/website/index.html' alt = 'here'>. **Work in progress**
+See the current deployment of the project <a href = 'https://antondavidouski.github.io/YINSH/website/index.html'>here</a>. ***Note: Work in progress***
 
 <h2> How to play YINSH
 <h2>
