@@ -1,11 +1,12 @@
-from neuralNetworks import Agent, sigmoid
+from networks import Agent, sigmoid, leakyRelu
 import numpy as np
+import time
 
 def initModel(n):
-    #Crrates a list of n base agents for the model with the specified model dimensions
-    
+    #Creates a list of n base agents for the model with the specified model dimensions
+    agents = []
     #initialise the weights
-    inputDim = 10
+    inputDim = 85
     hidden1Dim = 100
     hidden2Dim = 50
     hidden3Dim = 25
@@ -19,6 +20,19 @@ def initModel(n):
 
     layers = [np.random.randn(i, j) for i, j in zip(networkDim[:-1], networkDim[1:])]
 
-    agent = Agent(layers, biases, sigmoid)
-    myList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    print(agent.feedForward(myList))
+    agent = Agent(layers, biases, leakyRelu)
+    agents.append(agent)
+    
+    myList = list(range(1, 86))
+    start = time.perf_counter()
+    for i in range(100000):
+        agent.feedForward(myList)
+    end = time.perf_counter()
+    print((end-start) / 100000)
+    return agents
+
+def play(player1, player2):
+    #plays a game between two agents, returning the gain to each agent in terms of fitness
+    pass
+    
+initModel(100)
