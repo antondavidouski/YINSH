@@ -7,6 +7,8 @@ def sigmoid(x):
 def leakyRelu(x):
     return np.maximum(0.01*x, x)
 
+mutationRate = 0.1
+
 class Agent:
     
     def __init__(self, layers, biases, activation):
@@ -15,11 +17,21 @@ class Agent:
         self.biases = biases
         self.activation = activation
         self.layers, self.biases = self.generateNewWeights(self.layers, self.biases)
-    
+        self.fitness = 0
+        
     def generateNewWeights(self, layers, biases):
-        #will write this later, currently doesnt do anything useful
+        #make random mutations to the weights and biases
+        for i in range(len(layers)):
+            for j in range(len(layers[i])):
+                for k in range(len(layers[i][j])):
+                    if np.random.random() < mutationRate:
+                        layers[i][j][k] = np.random.randn()
+        for i in range(len(biases)):
+            for j in range(len(biases[i])):
+                if np.random.random() < mutationRate:
+                    biases[i][j] = np.random.randn()
         self.newLayers = layers
-        self.newBiases = biases
+        self.biases = biases
         return self.newLayers, self.newBiases
         
     def feedForward(self, inputs):
@@ -28,4 +40,7 @@ class Agent:
         for weights, bias in zip(self.layers, self.biases):
             self.output = self.activation(np.dot(self.output, weights) + bias)
         return self.output
+
+    def increaseFitness(self, n):
+        self.fitness += n
 
